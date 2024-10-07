@@ -1,0 +1,224 @@
+#1
+Future downloadFile() async {
+
+  await Future.delayed(Duration(seconds: 3));
+
+
+  print("Download complete");
+} 
+
+void main() {
+  downloadFile();
+}
+#2
+class Box<T> {
+  T value;
+
+  Box(this.value);
+
+  T getValue() {
+    return value;
+  }
+}
+
+void main() {
+  Box<int> box = Box(123);
+  print("Value in intBox: ${box.getValue()}");
+
+  Box<String> stringBox = Box("Hello, World!");
+  print("Value in stringBox: ${stringBox.getValue()}");
+}
+#3
+T getFirstElement<T>(List<T> list) {
+  if (list.isEmpty) {
+    throw Exception("The list is empty.");
+  }
+  return list[0];
+}
+
+V getValueForKey<K, V>(Map<K, V> map, K key) {
+  if (!map.containsKey(key)) {
+    throw Exception("Key not found in the map.");
+  }
+  return map[key]!;
+}
+
+void main() {
+  List<int> numbers = [10, 20, 30, 40];
+  print("First element in the list: ${getFirstElement(numbers)}"); 
+
+  List<String> words = ["apple", "banana", "cherry"];
+  print("First element in the list: ${getFirstElement(words)}"); 
+
+  // Demonstration with Map<K, V>
+  Map<String, int> ageMap = {"Alice": 25, "Bob": 30, "Charlie": 35};
+  print("Value for key 'Bob': ${getValueForKey(ageMap, "Bob")}");
+
+  Map<int, String> idMap = {1: "John", 2: "Jane", 3: "Doe"};
+  print("Value for key 2: ${getValueForKey(idMap, 2)}"); 
+#lambda fun is a short and unnamed function (used for simple tasks and an anonymous )
+#No dart does not have a specific keyword like interface to declare interfaces we use implements instead
+#The final keyword in dart is used to declare a variable that can only be assigned once and when we assign it with final it can’t be changed
+#we use async in dart when the function might take time while performing task
+#project 
+abstract class Person {
+  String _name;
+  int _age;
+
+  Person(this._name, this._age) {
+    if (_name.isEmpty) {
+      throw ArgumentError("Name cannot be empty");
+    }
+    if (_age <= 0) {
+      throw ArgumentError("Age must be a positive number");
+    }
+  }
+
+  String get name => _name;
+
+  set name(String name) {
+    if (name.isEmpty) {
+      throw ArgumentError("Name cannot be empty");
+    }
+    _name = name;
+  }
+
+  int get age => _age;
+
+  set age(int age) {
+    if (age <= 0) {
+      throw ArgumentError("Age must be a positive number");
+    }
+    _age = age;
+  }
+
+  void displayInfo();
+}
+
+class Patient extends Person {
+  String _illness;
+
+  Patient(String name, int age, this._illness) : super(name, age);
+
+  String get illness => _illness;
+
+  set illness(String illness) {
+    _illness = illness;
+  }
+
+  @override
+  void displayInfo() {
+    print("Patient: ${name}, Age: ${age}, Illness: ${_illness}");
+  }
+}
+
+class Doctor extends Person {
+  String _specialization;
+  List<Patient> patients = [];
+
+  Doctor(String name, int age, this._specialization) : super(name, age);
+
+  String get specialization => _specialization;
+
+  set specialization(String specialization) {
+    _specialization = specialization;
+  }
+
+  void addPatient(Patient patient) {
+    if (patients.contains(patient)) {
+      print("Patient ${patient.name} is already assigned to Dr. ${name}");
+    } else {
+      patients.add(patient);
+      print("Patient ${patient.name} has been assigned to Dr. ${name}");
+    }
+  }
+
+  @override
+  void displayInfo() {
+    print("Doctor: ${name}, Age: ${age}, Specialization: ${_specialization}");
+  }
+
+  void showPatients() {
+    print("Patients assigned to Dr. ${name}:");
+    for (var patient in patients) {
+      patient.displayInfo();
+    }
+  }
+}
+
+class Hospital {
+  List<Doctor> doctors = [];
+  List<Patient> patients = [];
+
+  void addPatient(Patient patient) {
+    if (patients.length >= 7) {
+      print("The hospital cannot accept more than 7 patients.");
+    } else if (patients.contains(patient)) {
+      print("Patient ${patient.name} is already added to the hospital.");
+    } else {
+      patients.add(patient);
+      print("Patient ${patient.name} has been added to the hospital.");
+    }
+  }
+
+  void addDoctor(Doctor doctor) {
+    doctors.add(doctor);
+    print("Doctor ${doctor.name} has been added to the hospital.");
+  }
+
+  void showAllPatients() {
+    print("All patients in the hospital:");
+    for (var patient in patients) {
+      patient.displayInfo();
+    }
+  }
+
+  void showAllDoctors() {
+    print("All doctors in the hospital:");
+    for (var doctor in doctors) {
+      doctor.displayInfo();
+    }
+  }
+}
+
+void main() {
+  Hospital hospital = Hospital();
+
+  Doctor doctor1 = Doctor("Mohamed", 45, "Cardiologist");
+  Doctor doctor2 = Doctor("Ahmed", 38, "Oncologist");
+
+  hospital.addDoctor(doctor1);
+  hospital.addDoctor(doctor2);
+
+  Patient patient1 = Patient("Ali", 30, "Heart Disease");
+  Patient patient2 = Patient("Mona", 25, "Cancer");
+  Patient patient3 = Patient("Fatima", 40, "Heart Disease");
+  Patient patient4 = Patient("Omar", 50, "Cancer");
+  Patient patient5 = Patient("Samira", 35, "Heart Disease");
+  Patient patient6 = Patient("Youssef", 45, "Cancer");
+  Patient patient7 = Patient("Hanan", 29, "Heart Disease");
+
+  hospital.addPatient(patient1);
+  hospital.addPatient(patient2);
+  hospital.addPatient(patient3);
+  hospital.addPatient(patient4);
+  hospital.addPatient(patient5);
+  hospital.addPatient(patient6);
+  hospital.addPatient(patient7);
+
+  doctor1.addPatient(patient1);
+  doctor1.addPatient(patient3);
+  doctor1.addPatient(patient5);
+  doctor1.addPatient(patient7);
+
+  doctor2.addPatient(patient2);
+  doctor2.addPatient(patient4);
+  doctor2.addPatient(patient6);
+
+  hospital.showAllDoctors();
+  hospital.showAllPatients();
+
+  doctor1.showPatients();
+  doctor2.showPatients();
+}
+}
